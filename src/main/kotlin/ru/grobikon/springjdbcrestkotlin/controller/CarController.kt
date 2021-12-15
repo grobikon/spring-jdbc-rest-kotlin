@@ -17,7 +17,7 @@ class CarController(
 
     @GetMapping("/{id}")
     fun getById(@PathVariable id: Int): CarDto {
-        return carService.getById(id = 1)
+        return carService.getById(id)
     }
 
     @PostMapping
