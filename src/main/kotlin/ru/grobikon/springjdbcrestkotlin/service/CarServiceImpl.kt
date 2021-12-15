@@ -11,7 +11,7 @@ class CarServiceImpl(
     private val carRepository: CarRepository
 ) : CarService {
 
-    override fun getAll(): List<CarDto> = carRepository.getAll()
+    override fun getAll(pageIndex: Int): List<CarDto> = carRepository.getAll(pageIndex)
         .map { it.toDto() }
 
     override fun getById(id: Int): CarDto =

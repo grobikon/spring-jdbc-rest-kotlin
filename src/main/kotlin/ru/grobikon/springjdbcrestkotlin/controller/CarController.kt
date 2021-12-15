@@ -11,8 +11,8 @@ class CarController(
 ){
 
     @GetMapping
-    fun getAll(): List<CarDto> {
-        return carService.getAll()
+    fun getAll(@RequestParam("page") pageIndex: Int): List<CarDto> {
+        return carService.getAll(pageIndex)
     }
 
     @GetMapping("/{id}")

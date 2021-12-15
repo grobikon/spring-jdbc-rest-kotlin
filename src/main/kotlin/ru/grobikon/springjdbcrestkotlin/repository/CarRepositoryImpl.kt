@@ -17,9 +17,13 @@ import java.sql.ResultSet
 class CarRepositoryImpl(
     private val jdbcTemplate: NamedParameterJdbcTemplate
 ) : CarRepository {
-    override fun getAll(): List<Car> =
+    override fun getAll(pageIndex: Int): List<Car> =
         jdbcTemplate.query(
-            "select * from car order by id",
+            "select * from car order by id limit :limit offset :offset",
+            mapOf(
+                "limit" to PAGE_SIZE,
+                "offset" to PAGE_SIZE * pageIndex
+            ),
             ROW_MAPPER
         )
 
@@ -78,6 +82,7 @@ class CarRepositoryImpl(
      * rs - построчно считывает данные
      */
     private companion object{
+        const val PAGE_SIZE = 3
         val ROW_MAPPER = RowMapper<Car> { rs: ResultSet, _ ->
             Car(
                 id = rs.getInt("id"),
