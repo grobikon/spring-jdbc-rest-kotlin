@@ -20,6 +20,9 @@ class CarController(
         return carService.getById(id)
     }
 
+    @GetMapping("/statistics")
+    fun getCarStatistics(): Map<String, Int> = carService.getCarStatistics()
+
     @PostMapping
     fun create(@RequestBody dto: CarDto): Int = carService.create(dto)
 

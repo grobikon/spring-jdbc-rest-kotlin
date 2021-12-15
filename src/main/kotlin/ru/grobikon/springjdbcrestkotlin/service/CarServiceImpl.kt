@@ -31,6 +31,10 @@ class CarServiceImpl(
         carRepository.delete(id)
     }
 
+    override fun getCarStatistics(): Map<String, Int> =
+        carRepository.getCarStatistics()
+
+
     private fun Car.toDto() = CarDto(
         id = id,
         title = title,

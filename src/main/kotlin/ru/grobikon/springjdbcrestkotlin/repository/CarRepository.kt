@@ -8,4 +8,5 @@ interface CarRepository {
     fun create(title: String, passengerCount: Int?): Int
     fun update(id: Int, title: String, passengerCount: Int?)
     fun delete(id: Int)
+    fun getCarStatistics(): Map<String, Int>
 }

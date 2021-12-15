@@ -1,5 +1,6 @@
 package ru.grobikon.springjdbcrestkotlin.repository
 
+import org.springframework.jdbc.core.ResultSetExtractor
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
@@ -77,6 +78,15 @@ class CarRepositoryImpl(
         )
     }
 
+    override fun getCarStatistics(): Map<String, Int> =
+        jdbcTemplate.query(
+            """select cb.title, count(c.id) 
+                    from car c join car_brand cb on c.brand_id = cb.id
+                    group by cb.title
+                """,
+            EXTRACTOR
+        )!!
+
     /**
      * Мапит поля нашей БД в поля нашей сущности
      * rs - построчно считывает данные
@@ -89,6 +99,16 @@ class CarRepositoryImpl(
                 title = rs.getString("title"),
                 passengerCount = rs.getIntOrNull("passenger_count"),
             )
+        }
+
+        val EXTRACTOR = ResultSetExtractor<Map<String, Int>> { rs ->
+            val result = mutableMapOf<String, Int>()
+            while (rs.next()) {
+                val title = rs.getString("title")
+                result.getOrPut(title) { 0 }
+                result[title] = result.getValue(title) + rs.getInt("count")
+            }
+            result
         }
     }
 }

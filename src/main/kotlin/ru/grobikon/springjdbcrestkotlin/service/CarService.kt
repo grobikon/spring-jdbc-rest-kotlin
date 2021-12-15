@@ -8,4 +8,5 @@ interface CarService {
     fun create(dto: CarDto): Int
     fun update(id: Int, dto: CarDto)
     fun delete(id: Int)
+    fun getCarStatistics(): Map<String, Int>
 }
